@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy 3 elements to &apos;instagram_project/src/main/java/com.spring.domain&apos;&#x0D;&#x0A;- Original project: &apos;insta&apos;&#x0D;&#x0A;- Destination element: &apos;instagram_project/src/main/java/com.spring.domain&apos;&#x0D;&#x0A;- Original elements:&#x0D;&#x0A;     com.luv.insta.model.Follow.java&#x0D;&#x0A;     com.luv.insta.model.Likes.java&#x0D;&#x0A;     com.luv.insta.model.Tag.java" description="Copy compilation units" destination="=instagram_project/src\/main\/java&lt;com.spring.domain" element1="/src\/main\/java&lt;com.luv.insta.model{Follow.java" element2="/src\/main\/java&lt;com.luv.insta.model{Likes.java" element3="/src\/main\/java&lt;com.luv.insta.model{Tag.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1611135522901" units="3" version="1.0"/>
+</session>

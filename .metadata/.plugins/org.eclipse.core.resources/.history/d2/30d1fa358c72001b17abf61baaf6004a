@@ -1,0 +1,30 @@
+
+//true -> unFollow , false -> Follow
+//userId = id값(기본키)
+//i=팔로우수
+function follow(check, userId, i){
+	let url = "/follow/"+userId;
+	if(check){
+		fetch(url,{
+			method: "POST"
+	    }).then(function(res){
+			return res.text();							
+		}).then(function(res){
+			if(res === "ok"){
+				let follow_item_ = document.querySelector("#follow_item_"+i);
+				follow_item_.innerHTML = `<button onClick="follow(false, ${userId}, ${i})" class="following_btn">팔로잉</button>`;
+			}
+		});
+	}else{
+		fetch(url,{
+			method: "DELETE"
+	    }).then(function(res){
+			return res.text();							
+		}).then(function(res){
+			if(res === "ok"){
+				let follow_item_ = document.querySelector("#follow_item_"+i);
+				follow_item_.innerHTML = `<button onClick="follow(true, ${userId}, ${i})" class="follow_btn">팔로우</button>`;
+			}
+		});
+	}
+}
