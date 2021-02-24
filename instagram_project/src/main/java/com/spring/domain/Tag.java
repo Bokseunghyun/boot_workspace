@@ -29,7 +29,7 @@ public class Tag {
 	private String name;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "imageId")
+	@JoinColumn(name = "image_Id")
 	@JsonBackReference	//!@->Image (순한참조 안됨)
 	private Images image;
 	

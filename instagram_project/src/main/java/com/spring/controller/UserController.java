@@ -29,10 +29,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.domain.Images;
+import com.spring.domain.Likes;
 import com.spring.domain.UserVO;
 import com.spring.repository.AccountRepository;
 import com.spring.repository.FollowRepository;
 import com.spring.repository.ImageRepository;
+import com.spring.repository.LikeRepository;
 import com.spring.security.AccountDetails;
 
 @Controller
@@ -46,6 +48,9 @@ public class UserController {
 
 	@Autowired
 	private ImageRepository ImageReposit;
+	
+	@Autowired
+	private LikeRepository LikeReposit;
 	
 	@Value("${spring.servlet.multipart.location}") // application.properties에 설정한 logging.file.path에 해당하는 프로퍼티를 fileRealPath에 넣음
 	private String fileRealPath;
@@ -73,6 +78,15 @@ public class UserController {
 		//나의 사진
 		List<Images> images = pageImages.getContent();
 		model.addAttribute("images", images);
+		
+		for(Images image : images) {
+			Likes like = LikeReposit.findByUserIdAndImageId(Acdetails.getVo().getId(), image.getId());
+		
+			if(like != null) {
+				image.setHeart(true);
+			}
+		}
+		
 		System.out.println("feed페이지");
 		return "/feed";
 	}
@@ -81,10 +95,19 @@ public class UserController {
 	public @ResponseBody List<Images> imageFeedScroll(@AuthenticationPrincipal AccountDetails AcDetails,
 			@PageableDefault(size = 3, sort = "id", direction = Direction.DESC) Pageable pageable,Model model) {
 
-		// 내가 팔로우한 친구들의 사진
+		// 내가 팔로우한 사람들의 사진
 		Page<Images> pageImages = ImageReposit.findImage(AcDetails.getVo().getId(), pageable);
 		System.out.println("스크롤");
 		List<Images> images = pageImages.getContent();
+		
+		for(Images image : images) {
+			Likes like = LikeReposit.findByUserIdAndImageId(AcDetails.getVo().getId(), image.getId());
+		
+			if(like != null) {
+				image.setHeart(true);
+			}
+		}
+		
 		return images;
 	}
 

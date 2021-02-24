@@ -1,0 +1,49 @@
+package com.spring.controller;
+
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.spring.domain.Images;
+import com.spring.domain.Likes;
+import com.spring.repository.ImageRepository;
+import com.spring.repository.LikeRepository;
+import com.spring.security.AccountDetails;
+
+public class LikeController {
+
+	
+	@Autowired
+	private LikeRepository LikeReposit;
+	
+	@Autowired
+	private ImageRepository ImageReposit;
+	
+	@PostMapping("/like/{id}")
+	public @ResponseBody String like(@PathVariable int id, @AuthenticationPrincipal AccountDetails AcDetails) {
+		
+		Likes toLike = LikeReposit.findByUserIdAndImageId(AcDetails.getVo().getId(), id);
+		
+		Likes like = new Likes();
+		
+		Optional<Images> OpImage = ImageReposit.findById(id);
+		Images images = OpImage.get();
+	
+		if(toLike == null) {
+		
+			Likes newLike = like.setImage(images); 
+			
+		}
+	
+		
+		
+		return "false";
+	}
+	
+	
+	
+}

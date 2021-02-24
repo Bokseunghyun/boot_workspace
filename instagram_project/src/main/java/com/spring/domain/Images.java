@@ -51,11 +51,15 @@ public class Images {
 	private List<Tag> tags = new ArrayList<>();
 	
 
-	/*
-	 * @OneToMany(mappedBy = "image") private List<Likes> likes = new ArrayList<>();
-	 */
+	@OneToMany(mappedBy = "image", fetch = FetchType.EAGER) 
+	private List<Likes> likes = new ArrayList<>();
+	
 	@Transient	//DB 테이블 컬럼과 매핑X (DB에 영향끼치지않음)
 	private int likeCount;
+	
+	@Transient
+	private boolean heart;
+	
 	
 	@CreationTimestamp
 	private Timestamp createDate;

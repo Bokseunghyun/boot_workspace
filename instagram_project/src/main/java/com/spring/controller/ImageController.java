@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +21,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.domain.Images;
+import com.spring.domain.Likes;
 import com.spring.domain.Tag;
 import com.spring.domain.UserVO;
 import com.spring.repository.ImageRepository;
+import com.spring.repository.LikeRepository;
 import com.spring.repository.TagRepository;
 import com.spring.security.AccountDetails;
 
@@ -38,6 +42,7 @@ public class ImageController {
 	
 	@Autowired
 	private TagRepository TagReposit;
+	
 	
 	@Value("${spring.servlet.multipart.location}") // application.properties에 설정한 logging.file.path에 해당하는 프로퍼티를 fileRealPath에 넣음
 	private String fileRealPath;
@@ -83,6 +88,16 @@ public class ImageController {
 		model.addAttribute("images",vo);
 		return "redirect:/feed";
 	}
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
 	
 public static List<String> tagParser(String tags){
 		

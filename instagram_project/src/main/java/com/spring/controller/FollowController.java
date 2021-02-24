@@ -87,13 +87,13 @@ public class FollowController {
 	@GetMapping("/follow/follower/{id}")
 	public String follower(@PathVariable int id, @AuthenticationPrincipal AccountDetails Acdetails, Model model) {
 		
-		//나를 팔로우한 사람들(팔로워 리스트)
+		//내가 팔로우한 사람들(팔로워 리스트)
 		List<Follow> followers = FollowReposit.findByFollowerId(id);
 		
-		//팔로우 리스트
+		//나를 팔로우한 사람들(팔로잉 리스트)
 		List<Follow> Follows_user = FollowReposit.findByFollowingId(Acdetails.getVo().getId());
 		
-		//맞팔상태
+		//나를 팔로잉 하고 있는 사람을 나도 팔로우 했는지 
 		for(Follow f1 : followers) {
 			for(Follow f2 : Follows_user) {
 				if(f1.getFollowing().getId()==f2.getFollower().getId()) {

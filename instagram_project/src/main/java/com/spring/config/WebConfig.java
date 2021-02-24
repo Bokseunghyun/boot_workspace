@@ -14,7 +14,8 @@ public class WebConfig implements WebMvcConfigurer{
 
 	@Value("${spring.servlet.multipart.location}")
 	private String fileRealPath;
-
+	
+	//static 외부에 있는 폴더 불러오기
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		WebMvcConfigurer.super.addResourceHandlers(registry);

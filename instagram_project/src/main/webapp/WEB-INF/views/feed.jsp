@@ -34,8 +34,19 @@
 				</div>
 				<div class="photo__info">
 					<div class="photo__actions">
-						<span class="photo__action"> <i class="fa fa-heart-o heart"></i>
-						</span> <span class="photo__action"> <i class="fa fa-comment-o"></i>
+						<span class="photo__action"> 
+							<c:choose>
+								<c:when test="${image.heart eq true}">
+									<i onclick="onFeedLoad(${image.user.id})" id = "${image.user.id}" class= "heart-clicked fa-heart fa-heart-o"></i>
+								</c:when>
+								<c:otherwise>
+								<i onclick="onFeedLoad(${image.user.id})" id="${image.user.id}" class="fa fa-heart-o heart"></i>
+							</c:otherwise>
+							</c:choose>
+						</span> 
+						
+						<span class="photo__action"> 
+						<i class="fa fa-comment-o"></i>
 						</span>
 					</div>
 					<span class="photo__likes">5,103 likes</span>
@@ -71,6 +82,9 @@
 
 <%@include file="include/footer.jsp"%>
 <script src="/js/feed.js"></script>
+<script src="/js/like.js"></script>
+
+
 </body>
 
 </html>

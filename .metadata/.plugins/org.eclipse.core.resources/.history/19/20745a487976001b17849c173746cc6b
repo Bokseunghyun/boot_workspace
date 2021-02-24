@@ -1,0 +1,13 @@
+package com.spring.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.spring.repository.LikeRepository;
+
+public class LikeController {
+
+	
+	@Autowired
+	private LikeRepository LikeReposit;
+	
+}

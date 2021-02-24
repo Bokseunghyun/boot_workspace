@@ -14,11 +14,17 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Entity
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Likes {
 	
 	@Id
@@ -34,7 +40,7 @@ public class Likes {
 	private UserVO user;
 	
 	@ManyToOne
-	@JoinColumn(name= "imageId")
+	@JoinColumn(name= "image_Id")
 	@JsonIgnoreProperties({"user", "likes"})
 	private Images image;
 	
