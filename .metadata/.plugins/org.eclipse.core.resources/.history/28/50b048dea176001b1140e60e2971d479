@@ -28,7 +28,7 @@ import lombok.ToString;
 
 @Entity
 @Data
-@ToString(exclude = {"user","likes"})
+@ToString(exclude = "user")
 public class Images {
 	
 	@Id

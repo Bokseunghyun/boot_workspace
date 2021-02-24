@@ -37,7 +37,7 @@
 						<span class="photo__action"> 
 							<c:choose>
 								<c:when test="${image.heart eq true}">
-									<i onclick="onFeedLoad(${image.id})" id = "${image.id}" class= "fa fa-heart heart heart-clicked"></i>
+									<i onclick="onFeedLoad(${image.id})" id = "${image.id}" class= "heart-clicked fa-heart fa-heart-o"></i>
 								</c:when>
 								<c:otherwise>
 								<i onclick="onFeedLoad(${image.id})" id="${image.id}" class="fa fa-heart-o heart"></i>
