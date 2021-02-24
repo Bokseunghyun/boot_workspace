@@ -68,19 +68,19 @@ public class UserController {
 	}
 
 	@GetMapping("/feed")
-	public String feed(@AuthenticationPrincipal AccountDetails Acdetails, @PageableDefault(size = 3, sort = "id", direction = Direction.DESC) Pageable pageable,Model model) {
+	public String feed(@AuthenticationPrincipal AccountDetails AcDetails, @PageableDefault(size = 3, sort = "id", direction = Direction.DESC) Pageable pageable,Model model) {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName(); // 현재 세션의 아이디를 가져옴
 		model.addAttribute("user", AcReposit.findByUsername(username));
 		System.out.println("정보"+model.addAttribute("user", AcReposit.findByUsername(username)));
 		//팔로우한 사람들의 사진
-		Page<Images> pageImages = ImageReposit.findImage(Acdetails.getVo().getId(), pageable);
+		Page<Images> pageImages = ImageReposit.findImage(AcDetails.getVo().getId(), pageable);
 		
 		//나의 사진
 		List<Images> images = pageImages.getContent();
 		model.addAttribute("images", images);
 		
 		for(Images image : images) {
-			Likes like = LikeReposit.findByUserIdAndImageId(Acdetails.getVo().getId(), image.getId());
+			Likes like = LikeReposit.findByUserIdAndImageId(AcDetails.getVo().getId(), image.getId());
 		
 			if(like != null) {
 				image.setHeart(true);
