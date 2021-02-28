@@ -81,130 +81,25 @@
       </div>
     </header>
     <div class="profile__photo-grid">
-      <div class="profile__photo-row">
+    	<c:forEach items="${user.image}" var="images">
+    	
         <div class="profile__photo">
           <a href="image-detail.html">
-            <img src="/images/feedPhoto.jpg">
+            <img src="/upload/${images.postImage}">
+          </a>
             <div class="profile__photo-overlay">
               <span class="profile__photo-stat">
-                <i class="fa fa-heart"></i> 504
+                <i class="fa fa-heart"></i> ${images.likeCount}
               </span>
               <span class="profile__photo-stat">
                 <i class="fa fa-comment"></i> 22
               </span>
             </div>
-          </a>
+          
         </div>
-        <div class="profile__photo">
-          <a href="image-detail.html">
-            <img src="/images/feedPhoto.jpg">
-            <div class="profile__photo-overlay">
-              <span class="profile__photo-stat">
-                <i class="fa fa-heart"></i> 504
-              </span>
-              <span class="profile__photo-stat">
-                <i class="fa fa-comment"></i> 22
-              </span>
-            </div>
-          </a>
+      
+    	</c:forEach>
         </div>
-        <div class="profile__photo">
-          <a href="image-detail.html">
-            <img src="/images/feedPhoto.jpg">
-            <div class="profile__photo-overlay">
-              <span class="profile__photo-stat">
-                <i class="fa fa-heart"></i> 504
-              </span>
-              <span class="profile__photo-stat">
-                <i class="fa fa-comment"></i> 22
-              </span>
-            </div>
-          </a>
-        </div>
-      </div>
-      <div class="profile__photo-row">
-        <div class="profile__photo">
-          <a href="image-detail.html">
-            <img src="/images/feedPhoto.jpg">
-            <div class="profile__photo-overlay">
-              <span class="profile__photo-stat">
-                <i class="fa fa-heart"></i> 504
-              </span>
-              <span class="profile__photo-stat">
-                <i class="fa fa-comment"></i> 22
-              </span>
-            </div>
-          </a>
-        </div>
-        <div class="profile__photo">
-          <a href="image-detail.html">
-            <img src="/images/feedPhoto.jpg">
-            <div class="profile__photo-overlay">
-              <span class="profile__photo-stat">
-                <i class="fa fa-heart"></i> 504
-              </span>
-              <span class="profile__photo-stat">
-                <i class="fa fa-comment"></i> 22
-              </span>
-            </div>
-          </a>
-        </div>
-        <div class="profile__photo">
-          <a href="image-detail.html">
-            <img src="/images/feedPhoto.jpg">
-            <div class="profile__photo-overlay">
-              <span class="profile__photo-stat">
-                <i class="fa fa-heart"></i> 504
-              </span>
-              <span class="profile__photo-stat">
-                <i class="fa fa-comment"></i> 22
-              </span>
-            </div>
-          </a>
-        </div>
-      </div>
-      <div class="profile__photo-row">
-        <div class="profile__photo">
-          <a href="image-detail.html">
-            <img src="/images/feedPhoto.jpg">
-            <div class="profile__photo-overlay">
-              <span class="profile__photo-stat">
-                <i class="fa fa-heart"></i> 504
-              </span>
-              <span class="profile__photo-stat">
-                <i class="fa fa-comment"></i> 22
-              </span>
-            </div>
-          </a>
-        </div>
-        <div class="profile__photo">
-          <a href="image-detail.html">
-            <img src="/images/feedPhoto.jpg">
-            <div class="profile__photo-overlay">
-              <span class="profile__photo-stat">
-                <i class="fa fa-heart"></i> 504
-              </span>
-              <span class="profile__photo-stat">
-                <i class="fa fa-comment"></i> 22
-              </span>
-            </div>
-          </a>
-        </div>
-        <div class="profile__photo">
-          <a href="image-detail.html">
-            <img src="/images/feedPhoto.jpg">
-            <div class="profile__photo-overlay">
-              <span class="profile__photo-stat">
-                <i class="fa fa-heart"></i> 504
-              </span>
-              <span class="profile__photo-stat">
-                <i class="fa fa-comment"></i> 22
-              </span>
-            </div>
-          </a>
-        </div>
-      </div>
-    </div>
   </main>
  <div class="profile__overlay">
     <i class="fa fa-times"></i>

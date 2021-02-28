@@ -1,0 +1,20 @@
+// 모달창
+$(".like_popup").click(function (){
+	load_likeAlert();
+});
+
+$(".follow_popup_close button").click(function (){
+	$("#modal .like_popup_items").empty();
+	$("#modal").removeClass("active");	
+});
+
+async function load_likeAlert(){
+	var response = await fetch("/like/alert");
+	var likeList = await response.json();
+	
+	likeList.forEach(function(likes){
+		var like_box = make_like_box(likes);
+		$("#modal .like_popup_items").append(like_box);
+	
+	});
+}

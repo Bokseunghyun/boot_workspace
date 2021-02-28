@@ -35,7 +35,7 @@ public class Likes {
 	@ManyToOne
 	@JoinColumn(name= "user_Id")
 	@JsonIgnoreProperties(
-		{"password", "name", "website", "intro", "email", "phone", 
+		{"image","password", "name", "website", "intro", "email", "phone", 
 			"gender","regDate", "updateDate"})
 	private UserVO user;
 	

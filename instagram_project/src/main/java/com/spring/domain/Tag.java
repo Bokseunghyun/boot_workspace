@@ -17,9 +17,11 @@ import org.hibernate.annotations.CreationTimestamp;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @Entity	//독립체
+@ToString(exclude = {"image"})
 public class Tag {
 	
 	@Id
@@ -29,7 +31,7 @@ public class Tag {
 	private String name;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "image_Id")
+	@JoinColumn(name = "imageId")
 	@JsonBackReference	//!@->Image (순한참조 안됨)
 	private Images image;
 	

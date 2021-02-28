@@ -24,6 +24,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -86,7 +87,12 @@ public class UserController {
 				image.setHeart(true);
 			}
 		}
-		
+		//feed 좋아요 수 누적
+		for (Images image : images) {
+			int likeCount = LikeReposit.countByImageId(image.getId());
+			image.setLikeCount(likeCount);
+		}
+
 		System.out.println("feed페이지");
 		return "/feed";
 	}
@@ -148,8 +154,22 @@ public class UserController {
 	}
 
 	@GetMapping("/user/edit-profile")
-	public String editProfile() {
-
+	public String editProfile(@AuthenticationPrincipal AccountDetails AcDetails,Model model) {
+		
+		Optional<UserVO> OpUser = AcReposit.findById(AcDetails.getVo().getId());
+		UserVO user = OpUser.get();
+		model.addAttribute("user",user);
+		
+		return "/user/edit-profile";
+	}
+	
+	@PutMapping("/user/edit-profile")
+	public String UpdateEditProfile(@AuthenticationPrincipal AccountDetails AcDetails,Model model) {
+		
+		Optional<UserVO> OpUser = AcReposit.findById(AcDetails.getVo().getId());
+		UserVO user = OpUser.get();
+		model.addAttribute("user",user);
+		
 		return "/user/edit-profile";
 	}
 
