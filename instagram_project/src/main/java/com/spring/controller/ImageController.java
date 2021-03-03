@@ -102,7 +102,6 @@ public class ImageController {
 public static List<String> tagParser(String tags){
 		
 		String temp[] = tags.split("#"); //#을 기준으로 문자열을 나눔
-		
 		List<String> tagList = new ArrayList<String>();
 		
 		int length = temp.length;

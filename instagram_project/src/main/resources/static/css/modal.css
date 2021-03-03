@@ -28,7 +28,6 @@
 
 .like_popup_items {
 	display: grid;
-	grid-template-columns: auto auto;
 	align-items: center;
 	justify-content: flex-start;
 	grid-gap: 15px;

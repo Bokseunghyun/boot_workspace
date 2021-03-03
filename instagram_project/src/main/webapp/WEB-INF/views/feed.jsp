@@ -17,6 +17,7 @@
 <script src="webjars/jquery/3.4.1/jquery.min.js"></script>
 <body>
 <%@include file="include/nav.jsp"%>
+<%@include file="modal.jsp"%>
 
   <main id="feed">
 			

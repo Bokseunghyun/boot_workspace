@@ -51,12 +51,12 @@
           <a href="/image/upload">
             <button class="profile_edit_btn">사진 업로드</button>
           </a>
-          <a href="../edit-profile">
+          <a href="/user/edit-profile">
             <button class="profile_edit_btn">프로필수정</button>
           </a>
+          <i class="fa fa-cog fa-lg"></i>
           </c:if>
           
-          <i class="fa fa-cog fa-lg"></i>
         </div>
 
         <ul class="profile__stats">
@@ -71,13 +71,10 @@
           </li>
         </ul>
         <p class="profile__bio">
-          <span class="profile__fullname">Nicolás Serrano Arévalo</span>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-          Voluptas repellendus cumque quo voluptatum voluptatem,
-          maxime nobis. Quae incidunt cum expedita facilis libero officiis,
-          delectus inventore tempore, ex nulla dolore cumque.
-          <a href="http://serranoarevalo.com" class="profile__link">serranoarevalo.com</a>
+          <span class="profile__fullname">${user.intro}</span>
+      			
         </p>
+          <a href="${user.website}" class="profile__link">${user.website}</a>
       </div>
     </header>
     <div class="profile__photo-grid">
@@ -105,8 +102,6 @@
     <i class="fa fa-times"></i>
     <div class="profile__overlay-container">
       <a href="#" class="profile__overlay-link">Change password</a>
-      <a href="#" class="profile__overlay-link">Authorize Apps</a>
-      <a href="#" class="profile__overlay-link">Notifications</a>
       <a href="#" class="profile__overlay-link" id="logout">Log Out</a>
       <a href="#" class="profile__overlay-link" id="cancel">Cancel</a>
     </div>

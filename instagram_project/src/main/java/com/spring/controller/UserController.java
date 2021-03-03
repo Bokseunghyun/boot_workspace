@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -70,6 +72,9 @@ public class UserController {
 
 	@GetMapping("/feed")
 	public String feed(@AuthenticationPrincipal AccountDetails AcDetails, @PageableDefault(size = 3, sort = "id", direction = Direction.DESC) Pageable pageable,Model model) {
+		
+
+		
 		String username = SecurityContextHolder.getContext().getAuthentication().getName(); // 현재 세션의 아이디를 가져옴
 		model.addAttribute("user", AcReposit.findByUsername(username));
 		System.out.println("정보"+model.addAttribute("user", AcReposit.findByUsername(username)));
@@ -119,7 +124,16 @@ public class UserController {
 
 	
 	@GetMapping("/explore")
-	public String explore() {
+	public String explore(Model model, @PageableDefault(size = 9, sort = "id",direction = Direction.DESC) Pageable pageable) {
+		
+		Page<Images> pImages = ImageReposit.findAll(pageable);
+		List<Images> lImages = pImages.getContent();
+		for(Images image : lImages) {
+			int likeCount = LikeReposit.countByImageId(image.getId());
+			image.setLikeCount(likeCount);
+		}
+		model.addAttribute("images",lImages);
+		
 		System.out.println("explore페이지");
 		return "/explore";
 	}
@@ -145,7 +159,10 @@ public class UserController {
 		int followerCount = FollowReposit.countByFollowerId(vo.getId());
 		model.addAttribute("followerCount", followerCount);
 
-		
+		for (Images images : user.getImage()) {
+			int likeCount = LikeReposit.countByImageId(images.getId());
+			images.setLikeCount(likeCount);
+		}
 		
 		int followCheck = FollowReposit.countByFollowingIdAndFollowerId(vo.getId(), id);
 		model.addAttribute("followCheck", followCheck);
@@ -163,14 +180,20 @@ public class UserController {
 		return "/user/edit-profile";
 	}
 	
-	@PutMapping("/user/edit-profile")
-	public String UpdateEditProfile(@AuthenticationPrincipal AccountDetails AcDetails,Model model) {
+	@PutMapping("/user/UpdateProfile")
+	public String UpdateEditProfile(@AuthenticationPrincipal AccountDetails AcDetails,Model model, UserVO uservo) {
 		
 		Optional<UserVO> OpUser = AcReposit.findById(AcDetails.getVo().getId());
 		UserVO user = OpUser.get();
-		model.addAttribute("user",user);
-		
-		return "/user/edit-profile";
+		user.setUsername(uservo.getUsername());
+		user.setName(uservo.getName());
+		user.setWebsite(uservo.getWebsite());
+		user.setIntro(uservo.getIntro());
+		user.setPhone(uservo.getPhone());
+		user.setEmail(uservo.getEmail());
+		AcReposit.save(user);
+		System.out.println("유저정보"+user);
+		return "redirect:/user/profile/"+AcDetails.getVo().getId();
 	}
 
 	@PostMapping("/user/profileUpload")

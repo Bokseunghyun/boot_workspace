@@ -49,7 +49,6 @@ public class UserVO {
 	private String intro; //소개글
 	private String phone; //전화번호
 	private String email; //이메일
-	private String gender; //성별
 	@Column(name="profile_Image")
 	private String profileImage; //프로필사진
 	

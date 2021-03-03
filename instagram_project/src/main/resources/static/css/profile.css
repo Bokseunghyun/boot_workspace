@@ -147,6 +147,14 @@
   color: #385185;
 }
 
+
+
+.profile__link {
+  color: #385185;
+  font-weight: 600;
+
+}
+
 .profile__bio {
 	margin-top: 5px;
 	margin-bottom: 5px;
@@ -155,11 +163,6 @@
 .profile__bio p {
 	margin-bottom: 5px;
 }
-
-/* 삭제 */
-/* .profile__photo-row .profile__photo {
-  width: 32%;
-} */
 
 .profile__photo a img {
   max-width: 100%;
