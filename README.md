@@ -4,6 +4,13 @@
 의존성
 
 
-ㅂ
+Sring Boot DevTools
+Lombok
+Spring Data JPA
+MySQL Driver
+Spring Security
+Spring Web
+oauth2-client
+ 
 
-ㅂ
+ 
