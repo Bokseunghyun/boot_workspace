@@ -21,8 +21,8 @@ import lombok.Data;
 @Data
 public class Follow {
 	@Id
-	@GeneratedValue(generator = "user_seq_gen",strategy = GenerationType.SEQUENCE)
-	@SequenceGenerator(sequenceName = "user_seq", name = "user_seq_gen")
+	@GeneratedValue(generator = "follow_seq_gen",strategy = GenerationType.SEQUENCE)
+	@SequenceGenerator(sequenceName = "follow_seq", name = "follow_seq_gen")
 	private int id;
 	
 	//중간 테이블 생성됨.

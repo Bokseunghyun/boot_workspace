@@ -29,13 +29,14 @@ drop table Follow;
 drop table images;
 drop table likes;
 drop table tag;
-
+drop table comments;
 
 select * from users;
 select * from images;
 select * from tag;
 select * from follow;
 select * from likes;
+select * from comments;
 
 insert into users(id,username,name,password) values(user_seq.nextval,'java123','자바','java123')
 

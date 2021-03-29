@@ -5,14 +5,14 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
-import com.spring.domain.Comment;
+import com.spring.domain.Comments;
 
-public interface CommentRepository extends JpaRepository<Comment, Integer>{
+public interface CommentRepository extends JpaRepository<Comments, Integer>{
 
-	List<Comment> findByImageId(int imageId);
 	
-	@Transactional
-	void deleteById(int id);
+	List<Comments> findById(int imageId);
 }
 

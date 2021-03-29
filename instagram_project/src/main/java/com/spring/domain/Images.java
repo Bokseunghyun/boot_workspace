@@ -28,12 +28,12 @@ import lombok.ToString;
 
 @Entity
 @Data
-@ToString(exclude = {"user","likes"})
+@ToString(exclude = {"user","likes","comments"})
 public class Images {
 	
 	@Id
-	@GeneratedValue(generator = "user_seq_gen",strategy = GenerationType.SEQUENCE)
-	@SequenceGenerator(sequenceName = "user_seq", name = "user_seq_gen")
+	@GeneratedValue(generator = "images_seq_gen",strategy = GenerationType.SEQUENCE)
+	@SequenceGenerator(sequenceName = "images_seq", name = "images_seq_gen")
 	private int id;
 	private String location;	// 사진 찍은 위치
 	private String caption;	// 사진 설명
@@ -53,6 +53,11 @@ public class Images {
 
 	@OneToMany(mappedBy = "image", fetch = FetchType.EAGER) 
 	private List<Likes> likes = new ArrayList<>();
+	
+	
+	@JsonIgnoreProperties({"image"})
+	@OneToMany(mappedBy = "image")
+	private List<Comments> comments = new ArrayList<>();
 	
 	@Transient	//DB 테이블 컬럼과 매핑X (DB에 영향끼치지않음)
 	private int likeCount;

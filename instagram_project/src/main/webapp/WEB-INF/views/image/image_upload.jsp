@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Document</title>
+<title>image_upload</title>
 	 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
     rel="stylesheet">
   <link rel="shortcut icon" href="/images/favicon.ico">
@@ -28,8 +28,7 @@
 					사진업로드
 					<hr class="hr" />
 				</div>
-				<!-- 섬네일은 아래 주소 참고 -->
-				<!-- https://medium.com/@asadise/create-thumbnail-for-an-image-in-spring-framework-49776c873ea1 -->
+
 			<form action="/image/imageUpload" method="post" enctype="multipart/form-data">
 				<table class="table">
 					<tr>

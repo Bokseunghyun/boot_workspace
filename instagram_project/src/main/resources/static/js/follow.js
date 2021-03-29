@@ -3,7 +3,7 @@
 //userId = id값(기본키)
 //i=팔로우수
 function follow(check, userId, i){
-	let url = "/follow/"+userId;
+	var url = "/follow/"+userId;
 	if(check){
 		//fetch의 url요청이 이루어진 후 then함수 실행됨 (then은 fetch요청을 하고 난 후 행동을 정의)
 		fetch(url,{

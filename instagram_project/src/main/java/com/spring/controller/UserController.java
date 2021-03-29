@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.xml.stream.events.Comment;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -31,10 +33,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.spring.domain.Comments;
 import com.spring.domain.Images;
 import com.spring.domain.Likes;
 import com.spring.domain.UserVO;
 import com.spring.repository.AccountRepository;
+import com.spring.repository.CommentRepository;
 import com.spring.repository.FollowRepository;
 import com.spring.repository.ImageRepository;
 import com.spring.repository.LikeRepository;
@@ -55,6 +59,10 @@ public class UserController {
 	@Autowired
 	private LikeRepository LikeReposit;
 	
+	@Autowired
+	private CommentRepository CommentReposit;
+	
+	
 	@Value("${spring.servlet.multipart.location}") // application.properties에 설정한 logging.file.path에 해당하는 프로퍼티를 fileRealPath에 넣음
 	private String fileRealPath;
 
@@ -71,13 +79,14 @@ public class UserController {
 	}
 
 	@GetMapping("/feed")
-	public String feed(@AuthenticationPrincipal AccountDetails AcDetails, @PageableDefault(size = 3, sort = "id", direction = Direction.DESC) Pageable pageable,Model model) {
+	public String feed(Comments co ,@AuthenticationPrincipal AccountDetails AcDetails, @PageableDefault(size = 3, sort = "id", direction = Direction.DESC) Pageable pageable,Model model) {
 		
-
+		Optional<UserVO> oUser = AcReposit.findById(AcDetails.getVo().getId());
+		UserVO user = oUser.get();
 		
-		String username = SecurityContextHolder.getContext().getAuthentication().getName(); // 현재 세션의 아이디를 가져옴
-		model.addAttribute("user", AcReposit.findByUsername(username));
-		System.out.println("정보"+model.addAttribute("user", AcReposit.findByUsername(username)));
+		model.addAttribute("user",user);
+		model.addAttribute("co",co);
+		System.out.println("co 내용 "+co);
 		//팔로우한 사람들의 사진
 		Page<Images> pageImages = ImageReposit.findImage(AcDetails.getVo().getId(), pageable);
 		
@@ -97,7 +106,8 @@ public class UserController {
 			int likeCount = LikeReposit.countByImageId(image.getId());
 			image.setLikeCount(likeCount);
 		}
-
+		
+		
 		System.out.println("feed페이지");
 		return "/feed";
 	}
@@ -111,6 +121,9 @@ public class UserController {
 		System.out.println("스크롤");
 		List<Images> images = pageImages.getContent();
 		
+		
+		model.addAttribute("images", images);
+		
 		for(Images image : images) {
 			Likes like = LikeReposit.findByUserIdAndImageId(AcDetails.getVo().getId(), image.getId());
 		
@@ -119,6 +132,11 @@ public class UserController {
 			}
 		}
 		
+		//feed 좋아요 수 누적
+		for (Images image : images) {
+			int likeCount = LikeReposit.countByImageId(image.getId());
+			image.setLikeCount(likeCount);
+		}
 		return images;
 	}
 

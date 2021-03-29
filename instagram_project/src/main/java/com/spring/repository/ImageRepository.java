@@ -15,4 +15,6 @@ public interface ImageRepository extends JpaRepository<Images, Integer>{
 	
 	@Query(value = "select * from images where user_Id in (select following_Id from follow where follower_Id = ?1) or user_Id = ?1", nativeQuery = true)
 	Page<Images> findImage(int userId, Pageable pageable);
+
+
 }

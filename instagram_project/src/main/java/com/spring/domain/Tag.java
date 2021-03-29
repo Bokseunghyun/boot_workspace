@@ -25,8 +25,8 @@ import lombok.ToString;
 public class Tag {
 	
 	@Id
-	@GeneratedValue(generator = "user_seq_gen",strategy = GenerationType.SEQUENCE)
-	@SequenceGenerator(sequenceName = "user_seq", name = "user_seq_gen")
+	@GeneratedValue(generator = "tag_seq_gen",strategy = GenerationType.SEQUENCE)
+	@SequenceGenerator(sequenceName = "tag_seq", name = "tag_seq_gen")
 	private int id;
 	private String name;
 	

@@ -50,41 +50,49 @@
 						<i class="fa fa-comment-o"></i>
 						</span>
 					</div>
-					<span class="photo__likes"id="photo_likes_count_${image.id}">${image.likeCount}</span><span class="photo__likes"> likes</span>
+					<span class="photo__likes">좋아요 </span><span class="photo__likes"id="photo_likes_count_${image.id}">${image.likeCount}</span><span class="photo__likes">개</span>
 					<div class="photo_caption">
 						<span class="photo__username">
 							${image.user.username}
 						</span>
 						${image.caption}
 					</div>
+		
 					<div class="photo_tag">
 						<c:forEach var="tag" items="${image.tags}">
 							#${tag.name}  
 						</c:forEach>
 					</div>
 					<ul class="photo__comments">
-						<li class="photo__comment"><span class="photo__comment-author">serranoarevalo</span> i
-							love this!</li>
-						<li class="photo__comment"><span class="photo__comment-author">serranoarevalo</span> i
-							don't love this!</li>
+						<li class="photo__comment">
+						<span class="photo__comment-author">${co.user}</span>
+						 <span style="font-size:12px;">${co}</span>
+						</li>
 					</ul>
-					<span class="photo__date">${image.createDate}</span>
+					<span class="photo__date">사진 등록일 ${image.createDate}</span>
+					
 					<div class="photo__add-comment-container">
-						<textarea placeholder="Add a comment..."></textarea>
-						<i class="fa fa-ellipsis-h"></i>
+					
+					<form action="/comment/insert" method="POST" id="frm_${image.id}">
+					<input type="hidden" name="user_Id" value="${principalId.vo.id}" />
+					<input type="hidden" name="image_Id" value="${image.id}" />
+						<textarea id="content_${image.id}" name = "content" placeholder="Add a comment..."></textarea>
+					</form>
+						<i class="fa fa-ellipsis-h" onclick ="commentSend(${image.id})"></i>
 					</div>
 				</div>
 			</div>
-			
-		</c:forEach>
+						</c:forEach>
+		
 		
 	</main>
 
 
 <%@include file="include/footer.jsp"%>
+
 <script src="/js/feed.js"></script>
 <script src="/js/like.js"></script>
-
+<script src="/js/Comment.js"></script>
 
 </body>
 
