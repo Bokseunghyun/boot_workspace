@@ -1,13 +1,12 @@
-# boot_workspace
- 인스타그램 클론코딩
+# 인스타그램 클론코딩
 
 ### 의존성
-*Spring Boot DevTools
-*Lombok
-*Spring Data JPA
-*Oracle Driver
-*Spring Security
-*Spring Web
-*oauth2-client
+* Spring Boot DevTools
+* Lombok
+* Spring Data JPA
+* Oracle Driver
+* Spring Security
+* Spring Web
+* oauth2-client
  
 
