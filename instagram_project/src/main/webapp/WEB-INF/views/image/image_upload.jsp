@@ -48,7 +48,7 @@
 						<td><input type="text" name="location" placeholder="위치"></td>
 					</tr>
 					<tr>
-						<td><input type="text" name="tags" placeholder="#태그"></td>
+						<td><input type="text" name="tags" placeholder="#태그 (#붙이고 입력)"></td>
 					</tr>
 				</table>
 				<input type="submit" value="업로드">

@@ -67,24 +67,14 @@ public class ImageController {
 		Files.write(filePath,file.getBytes());
 		
 		
-		Images images = new Images();
-		images.setCaption(caption);
-		images.setLocation(location);
-		images.setUser(vo);
-		images.setPostImage(uuidFileName);
+		Images images = Images.builder().caption(caption).location(location).user(vo).postImage(uuidFileName).build();
 		
 		ImageReposit.save(images);
-		List<String> tagList = tagParser(tags);
+		List<Tag> tagList = tagParser(tags,images);
+		TagReposit.saveAll(tagList);
 		System.out.println(images);
 		
-		for(String tag : tagList) {
-			Tag t = new Tag();
-			t.setName(tag);
-			t.setImage(images);
-			
-			TagReposit.save(t);
-			images.getTags().add(t);
-		}
+		
 		model.addAttribute("images",vo);
 		return "redirect:/feed";
 	}
@@ -99,15 +89,18 @@ public class ImageController {
 	
 	
 	
-public static List<String> tagParser(String tags){
+public static List<Tag> tagParser(String tags, Images images){
 		
 		String temp[] = tags.split("#"); //#을 기준으로 문자열을 나눔
-		List<String> tagList = new ArrayList<String>();
+		List<Tag> tagList = new ArrayList<>();
 		
 		int length = temp.length;
 		
 		for(int i=1; i<length; i++) {
-			tagList.add(temp[i]);
+			
+			Tag tag = Tag.builder().name(temp[i].trim()).image(images).build();
+		
+			tagList.add(tag);
 		}
 		
 		return tagList;

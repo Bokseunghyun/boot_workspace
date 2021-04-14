@@ -13,6 +13,5 @@ import com.spring.domain.Comments;
 public interface CommentRepository extends JpaRepository<Comments, Integer>{
 
 	
-	List<Comments> findById(int imageId);
 }
 

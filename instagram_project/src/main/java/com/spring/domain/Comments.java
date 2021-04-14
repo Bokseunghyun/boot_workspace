@@ -13,8 +13,10 @@ import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -22,6 +24,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Comments {
 
 	@Id
@@ -29,6 +32,7 @@ public class Comments {
 	@SequenceGenerator(sequenceName = "comment_seq", name = "comment_seq_gen")
 	private int id;
 	
+	@JsonIgnoreProperties({"image"})
 	@ManyToOne
 	@JoinColumn(name = "user_Id")
 	private UserVO user;

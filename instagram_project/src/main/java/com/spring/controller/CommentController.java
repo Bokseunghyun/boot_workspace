@@ -1,5 +1,6 @@
 package com.spring.controller;
 
+import java.awt.Image;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -43,34 +45,27 @@ public class CommentController {
 	private AccountRepository AcReposit;
 	
 	
-	@PostMapping("/comment/insert")
-	public String comment(@AuthenticationPrincipal AccountDetails AcDetails, @RequestParam("user_Id") int user_Id, @RequestParam("image_Id")int image_Id,@RequestParam("content")String content,Model model){
-		Optional<Images> OpImages = ImageReposit.findById(image_Id);
-		Optional<UserVO> OpUsers = AcReposit.findById(AcDetails.getVo().getId());
-		Images image = OpImages.get();
-		UserVO vo = OpUsers.get();
+	@PostMapping("/comment/insert/{image_Id}")
+	public @ResponseBody Comments comment(@AuthenticationPrincipal AccountDetails AcDetails,@PathVariable int image_Id,@RequestBody String content,Model model){
 		
-		Comments comments = new Comments();
-		comments.setContent(content);
-		comments.setImage(image);
-		comments.setUser(vo);
-		CommentReposit.save(comments);
-		model.addAttribute("co",comments);
-		ImageReposit.findById(image_Id);
+		Images image = Images.builder().id(image_Id).build();
 		
-		System.out.println("코멘트"+comments);
-		System.out.println("컨텐츠"+comments.getContent());
-		return "/feed";
+		Comments comment = Comments.builder().content(content).image(image).user(AcDetails.getVo()).build();
+		
+		model.addAttribute("co",comment);
+		
+		System.out.println("코멘트 = " +comment);
+		return CommentReposit.save(comment);
 	}
 	@DeleteMapping("/comment/{id}")
-	public ResponseEntity<?> commentDelete(@PathVariable int id) {
-		CommentReposit.deleteById(id);
-		return new ResponseEntity<String>("ok", HttpStatus.OK);
+	public void commentDelete(@PathVariable int id, @AuthenticationPrincipal AccountDetails AcDetails) {
+		
+		Comments comment = CommentReposit.findById(id).get();
+		
+		if(comment.getUser().getId() == AcDetails.getVo().getId()) {
+			CommentReposit.deleteById(id);
+		}
+		
 	}
 	
-	/*
-	 * @GetMapping("/comment/list") public List<Comments>
-	 * findByImageId(@RequestParam("image_Id") int imageId, Model model){ return
-	 * CommentReposit.findByImageId(imageId); }
-	 */
 }

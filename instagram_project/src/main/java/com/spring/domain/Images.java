@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
@@ -22,13 +23,19 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 
 @Entity
 @Data
 @ToString(exclude = {"user","likes","comments"})
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Images {
 	
 	@Id
@@ -55,9 +62,10 @@ public class Images {
 	private List<Likes> likes = new ArrayList<>();
 	
 	
+	@OrderBy("id DESC")
 	@JsonIgnoreProperties({"image"})
 	@OneToMany(mappedBy = "image")
-	private List<Comments> comments = new ArrayList<>();
+	private List<Comments> comments;
 	
 	@Transient	//DB 테이블 컬럼과 매핑X (DB에 영향끼치지않음)
 	private int likeCount;

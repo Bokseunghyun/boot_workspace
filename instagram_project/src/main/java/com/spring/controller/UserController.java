@@ -62,7 +62,6 @@ public class UserController {
 	@Autowired
 	private CommentRepository CommentReposit;
 	
-	
 	@Value("${spring.servlet.multipart.location}") // application.properties에 설정한 logging.file.path에 해당하는 프로퍼티를 fileRealPath에 넣음
 	private String fileRealPath;
 
@@ -79,14 +78,12 @@ public class UserController {
 	}
 
 	@GetMapping("/feed")
-	public String feed(Comments co ,@AuthenticationPrincipal AccountDetails AcDetails, @PageableDefault(size = 3, sort = "id", direction = Direction.DESC) Pageable pageable,Model model) {
-		
+	public String feed(@AuthenticationPrincipal AccountDetails AcDetails, @PageableDefault(size = 3, sort = "id", direction = Direction.DESC) Pageable pageable,Model model) {
+	
 		Optional<UserVO> oUser = AcReposit.findById(AcDetails.getVo().getId());
 		UserVO user = oUser.get();
 		
 		model.addAttribute("user",user);
-		model.addAttribute("co",co);
-		System.out.println("co 내용 "+co);
 		//팔로우한 사람들의 사진
 		Page<Images> pageImages = ImageReposit.findImage(AcDetails.getVo().getId(), pageable);
 		
@@ -157,7 +154,7 @@ public class UserController {
 	}
 
 	@GetMapping("/user/profile/{id}")
-	public String profile(@PathVariable int id, @AuthenticationPrincipal AccountDetails AcDetails, Model model) {
+	public String profile(Comments co, @PathVariable int id, @AuthenticationPrincipal AccountDetails AcDetails, Model model) {
 		UserVO vo = AcDetails.getVo();
 		
 		Optional<UserVO> oUser = AcReposit.findById(id);
@@ -165,6 +162,7 @@ public class UserController {
 
 		model.addAttribute("user",user);
 		
+		model.addAttribute("co",co);
 		//업로드 이미지 카운트
 		int imageCount = user.getImage().size();
 		model.addAttribute("imageCount", imageCount);
