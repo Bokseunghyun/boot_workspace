@@ -1,18 +1,14 @@
 package com.spring.controller;
 
-import java.awt.Image;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.xml.stream.events.Comment;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,10 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,7 +32,6 @@ import com.spring.domain.Images;
 import com.spring.domain.Likes;
 import com.spring.domain.UserVO;
 import com.spring.repository.AccountRepository;
-import com.spring.repository.CommentRepository;
 import com.spring.repository.FollowRepository;
 import com.spring.repository.ImageRepository;
 import com.spring.repository.LikeRepository;
@@ -59,12 +52,9 @@ public class UserController {
 	@Autowired
 	private LikeRepository LikeReposit;
 	
-	@Autowired
-	private CommentRepository CommentReposit;
-	
 	@Value("${spring.servlet.multipart.location}") // application.properties에 설정한 logging.file.path에 해당하는 프로퍼티를 fileRealPath에 넣음
 	private String fileRealPath;
-
+	
 	@GetMapping(value = { "/", "/index" })
 	public String index() {
 		System.out.println("index호출");
@@ -76,20 +66,17 @@ public class UserController {
 		System.out.println("main페이지");
 		return "/main";
 	}
-
+	
+	
 	@GetMapping("/feed")
 	public String feed(@AuthenticationPrincipal AccountDetails AcDetails, @PageableDefault(size = 3, sort = "id", direction = Direction.DESC) Pageable pageable,Model model) {
 	
-		Optional<UserVO> oUser = AcReposit.findById(AcDetails.getVo().getId());
-		UserVO user = oUser.get();
 		
-		model.addAttribute("user",user);
 		//팔로우한 사람들의 사진
 		Page<Images> pageImages = ImageReposit.findImage(AcDetails.getVo().getId(), pageable);
 		
 		//나의 사진
 		List<Images> images = pageImages.getContent();
-		model.addAttribute("images", images);
 		
 		for(Images image : images) {
 			Likes like = LikeReposit.findByUserIdAndImageId(AcDetails.getVo().getId(), image.getId());
@@ -98,13 +85,15 @@ public class UserController {
 				image.setHeart(true);
 			}
 		}
+
 		//feed 좋아요 수 누적
 		for (Images image : images) {
 			int likeCount = LikeReposit.countByImageId(image.getId());
 			image.setLikeCount(likeCount);
+		
 		}
-		
-		
+		model.addAttribute("images", images);
+
 		System.out.println("feed페이지");
 		return "/feed";
 	}
@@ -154,25 +143,23 @@ public class UserController {
 	}
 
 	@GetMapping("/user/profile/{id}")
-	public String profile(Comments co, @PathVariable int id, @AuthenticationPrincipal AccountDetails AcDetails, Model model) {
-		UserVO vo = AcDetails.getVo();
+	public String profile(@PathVariable int id, @AuthenticationPrincipal AccountDetails AcDetails, Model model) {
 		
 		Optional<UserVO> oUser = AcReposit.findById(id);
 		UserVO user = oUser.get();
 
 		model.addAttribute("user",user);
 		
-		model.addAttribute("co",co);
 		//업로드 이미지 카운트
 		int imageCount = user.getImage().size();
 		model.addAttribute("imageCount", imageCount);
 
 		//팔로우 수 카운트
-		int followCount = FollowReposit.countByFollowingId(vo.getId());
+		int followCount = FollowReposit.countByFollowingId(user.getId());
 		model.addAttribute("followCount", followCount);
 
 		//팔로워 수 카운트
-		int followerCount = FollowReposit.countByFollowerId(vo.getId());
+		int followerCount = FollowReposit.countByFollowerId(user.getId());
 		model.addAttribute("followerCount", followerCount);
 
 		for (Images images : user.getImage()) {
@@ -180,7 +167,7 @@ public class UserController {
 			images.setLikeCount(likeCount);
 		}
 		
-		int followCheck = FollowReposit.countByFollowingIdAndFollowerId(vo.getId(), id);
+		int followCheck = FollowReposit.countByFollowingIdAndFollowerId(user.getId(), id);
 		model.addAttribute("followCheck", followCheck);
 		System.out.println("followCheck = "+followCheck );
 		return "/user/profile";
@@ -208,7 +195,7 @@ public class UserController {
 		user.setPhone(uservo.getPhone());
 		user.setEmail(uservo.getEmail());
 		AcReposit.save(user);
-		System.out.println("유저정보"+user);
+		System.out.println("수정된유저정보"+user);
 		return "redirect:/user/profile/"+AcDetails.getVo().getId();
 	}
 
@@ -225,8 +212,10 @@ public class UserController {
 		Path filePath = Paths.get(fileRealPath+uuidFilename);
 		Files.write(filePath,file.getBytes());
 		
-		vo.setProfileImage(uuidFilename);
-		AcReposit.save(vo);
+		Optional<UserVO> OpUser =AcReposit.findById(vo.getId());
+		UserVO user = OpUser.get();
+		user.setProfileImage(uuidFilename);
+		AcReposit.save(user);
 
 		return "redirect:/user/profile/" + vo.getId();
 	}

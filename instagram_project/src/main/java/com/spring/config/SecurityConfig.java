@@ -4,7 +4,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import javax.servlet.Filter;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +24,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+
+import com.spring.Filter.OAuth2Filter;
+
 
 @Configuration
 @EnableWebSecurity
@@ -31,6 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserDetailsService userDetailsService;
 	
+	@Autowired
+	private OAuth2Filter filter;
 
 	@Bean
 	public PasswordEncoder PwdEncoder() {
@@ -45,16 +55,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	http.csrf().disable();
 	http.cors().disable();
 	// "/","/index"는 모든 사용자에게 허용, 그 외 요청은 인증이 필요
-	http.authorizeRequests().antMatchers("/","/index","/user/**").permitAll()
+	http.authorizeRequests().antMatchers("/","/index","/user/**,/comment/**").permitAll()
 	
 	//다른페이지는 인증 필요
 	.anyRequest().authenticated()
-	.and()
+	.and().addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class)
 	//폼 인증 사용
 	.formLogin()
 	.loginPage("/") //스프링시큐리티에서 제공하는 로그인페이지를 사용하지 않고 만든 로그인페이지사용
 	.loginProcessingUrl("/") //실제 로그인 처리할 페이지
-	.defaultSuccessUrl("/feed"); //로그인 후 이동할 페이지
+	.defaultSuccessUrl("/feed")
+	.and()
+	.oauth2Login()
+	.loginPage("/feed");//로그인 후 이동할 페이지
 	}
 	
 	@Override
@@ -71,6 +84,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		auth.userDetailsService(userDetailsService).passwordEncoder(PwdEncoder());
 	}
 	
-	
-	
+	@Bean
+	public Filter ssoFilter() {
+		return filter.ssoFilter();
+	}
+
 }

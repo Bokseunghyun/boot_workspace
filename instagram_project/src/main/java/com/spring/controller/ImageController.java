@@ -10,12 +10,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +35,7 @@ import com.spring.repository.ImageRepository;
 import com.spring.repository.LikeRepository;
 import com.spring.repository.TagRepository;
 import com.spring.security.AccountDetails;
+import com.spring.utill.Utill;
 
 
 @Controller
@@ -56,9 +60,8 @@ public class ImageController {
 	}
 	
 	@PostMapping("/image/imageUpload")
+	@Transactional
 	public String ImageUpload(@AuthenticationPrincipal AccountDetails AcDetails, @RequestParam("file")MultipartFile file, @RequestParam("caption") String caption, @RequestParam("location")String location, @RequestParam("tags")String tags, Model model) throws IOException {
-		
-		UserVO vo = AcDetails.getVo();
 		
 		UUID uuid = UUID.randomUUID();
 		String uuidFileName = uuid + "_" + file.getOriginalFilename();
@@ -67,15 +70,14 @@ public class ImageController {
 		Files.write(filePath,file.getBytes());
 		
 		
-		Images images = Images.builder().caption(caption).location(location).user(vo).postImage(uuidFileName).build();
+		Images images = Images.builder().caption(caption).location(location).user(AcDetails.getVo()).postImage(uuidFileName).build();
 		
 		ImageReposit.save(images);
-		List<Tag> tagList = tagParser(tags,images);
+		List<Tag> tagList = Utill.tagParser(tags, images);
 		TagReposit.saveAll(tagList);
-		System.out.println(images);
+		System.out.println("이미지등록"+images);
 		
-		
-		model.addAttribute("images",vo);
+		//model.addAttribute("images",vo);
 		return "redirect:/feed";
 	}
 	
@@ -84,27 +86,6 @@ public class ImageController {
 	
 	
 	
-	
-	
-	
-	
-	
-public static List<Tag> tagParser(String tags, Images images){
-		
-		String temp[] = tags.split("#"); //#을 기준으로 문자열을 나눔
-		List<Tag> tagList = new ArrayList<>();
-		
-		int length = temp.length;
-		
-		for(int i=1; i<length; i++) {
-			
-			Tag tag = Tag.builder().name(temp[i].trim()).image(images).build();
-		
-			tagList.add(tag);
-		}
-		
-		return tagList;
-	}
 	
 
 }

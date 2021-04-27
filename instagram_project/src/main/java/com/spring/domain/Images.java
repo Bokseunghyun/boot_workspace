@@ -3,7 +3,9 @@ package com.spring.domain;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,7 +18,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
+import javax.transaction.Transactional;
 
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -32,7 +36,7 @@ import lombok.ToString;
 
 @Entity
 @Data
-@ToString(exclude = {"user","likes","comments"})
+@ToString(exclude = {"user","likes","tags","comments"})
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -52,22 +56,20 @@ public class Images {
 	@JsonIgnoreProperties({"password","images"})	//무시할 속성이나 속성 목록을 표시하는 데 사용됨
 	private UserVO user;	
 	
-	//(1) Tag List
 	@OneToMany(mappedBy = "image",fetch = FetchType.EAGER)
-	@JsonManagedReference	
+	@JsonManagedReference
 	private List<Tag> tags = new ArrayList<>();
 	
-
-	@OneToMany(mappedBy = "image", fetch = FetchType.EAGER) 
-	private List<Likes> likes = new ArrayList<>();
 	
+	@OneToMany(mappedBy = "image") 
+	private List<Likes> likes = new ArrayList<>();
 	
 	@OrderBy("id DESC")
 	@JsonIgnoreProperties({"image"})
-	@OneToMany(mappedBy = "image")
-	private List<Comments> comments;
+	@OneToMany(mappedBy = "image", fetch = FetchType.EAGER)
+	private List<Comments> comments = new ArrayList<>();
 	
-	@Transient	//DB 테이블 컬럼과 매핑X (DB에 영향끼치지않음)
+	@Transient	//DB 테이블 컬럼이 만들어지지 않음(DB에 영향끼치지않음)
 	private int likeCount;
 	
 	@Transient

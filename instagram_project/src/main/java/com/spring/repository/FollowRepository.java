@@ -5,9 +5,11 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.spring.domain.Follow;
 
+@Repository
 public interface FollowRepository extends JpaRepository<Follow, Integer>{
 	
 	//팔로우 유무

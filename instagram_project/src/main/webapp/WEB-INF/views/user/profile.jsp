@@ -81,7 +81,7 @@
     	<c:forEach items="${user.image}" var="images">
     	
         <div class="profile__photo">
-          <a href="image-detail.html">
+          <a href="">
             <img src="/upload/${images.postImage}">
           </a>
             <div class="profile__photo-overlay">

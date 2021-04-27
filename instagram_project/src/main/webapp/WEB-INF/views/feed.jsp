@@ -63,21 +63,22 @@
 							#${tag.name}  
 						</c:forEach>
 					</div>
+					<c:forEach var = "co" items="${image.comments}">
 					<ul class="photo__comments" id="co_${image.id}">
 						<li class="photo__comment">
 						<span class="photo__comment-author">${co.user.username}</span>
 						 <span style="font-size:12px;">${co.content}</span>
 						</li>
 					</ul>
+						 
+					</c:forEach>
 					<span class="photo__date">사진 등록일 ${image.createDate}</span>
 					
 					<div class="photo__add-comment-container">
 					
-					<form action="/comment/insert/${image_Id}" method="POST" id="frm_${image.id}">
 					<input type="hidden" name="user_Id" value="${principalId.vo.id}" />
 					<input type="hidden" name="image_Id" value="${image.id}" />
 						<textarea id="content_${image.id}" name = "content" placeholder="Add a comment..."></textarea>
-					</form>
 						<i class="fa fa-ellipsis-h" onclick ="addComment(${image.id},'${user.username}')"></i>
 					</div>
 				</div>

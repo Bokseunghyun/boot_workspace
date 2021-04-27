@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.NotNull;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
@@ -63,6 +64,7 @@ public class UserVO {
 	
 	@OneToMany(mappedBy = "user",fetch = FetchType.EAGER) //Image가 uservo(fk)의 부모 uservo는 참조만 가능
 	@JsonIgnoreProperties({"user","tags","likes"})
+	@OrderBy("id DESC")
 	private List<Images> image = new ArrayList<>(); 
 	
 	

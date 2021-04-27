@@ -5,6 +5,8 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,43 +31,31 @@ import com.spring.repository.AccountRepository;
 import com.spring.repository.CommentRepository;
 import com.spring.repository.ImageRepository;
 import com.spring.security.AccountDetails;
+import com.spring.service.CommentService;
 
 import oracle.jdbc.proxy.annotation.Post;
 
-@Controller
+@RestController
 public class CommentController {
 
 	@Autowired
-	private ImageRepository ImageReposit;
-	
-	@Autowired
-	private CommentRepository CommentReposit;
-	
-	@Autowired
-	private AccountRepository AcReposit;
+	private CommentService CoService;
 	
 	
 	@PostMapping("/comment/insert/{image_Id}")
-	public @ResponseBody Comments comment(@AuthenticationPrincipal AccountDetails AcDetails,@PathVariable int image_Id,@RequestBody String content,Model model){
+	public ResponseEntity<Comments> comment(@AuthenticationPrincipal AccountDetails AcDetails,@PathVariable int image_Id,@RequestBody String content){
 		
-		Images image = Images.builder().id(image_Id).build();
+		Comments com = CoService.commentInsert(AcDetails.getVo(), content, image_Id);
+		System.out.println("코멘트 = " +com);
+		return new ResponseEntity<Comments>(com,HttpStatus.CREATED);
 		
-		Comments comment = Comments.builder().content(content).image(image).user(AcDetails.getVo()).build();
-		
-		model.addAttribute("co",comment);
-		
-		System.out.println("코멘트 = " +comment);
-		return CommentReposit.save(comment);
 	}
 	@DeleteMapping("/comment/{id}")
-	public void commentDelete(@PathVariable int id, @AuthenticationPrincipal AccountDetails AcDetails) {
+	public ResponseEntity<Comments> commentDelete(@PathVariable int id, @AuthenticationPrincipal AccountDetails AcDetails) {
 		
-		Comments comment = CommentReposit.findById(id).get();
+		Comments comment = CoService.commentDelete(id, AcDetails.getVo().getId());
 		
-		if(comment.getUser().getId() == AcDetails.getVo().getId()) {
-			CommentReposit.deleteById(id);
-		}
-		
+		return new ResponseEntity<Comments>(comment,HttpStatus.OK);
 	}
 	
 }

@@ -41,7 +41,6 @@
  						<span class="facebookImage"></span>
  						<span class="facebookText">Facebook으로 로그인</span>
  						</button>
-                    	<div class="forget">비밀번호를 잊으셨나요?</div>
                   	  	
  					</div>
  				

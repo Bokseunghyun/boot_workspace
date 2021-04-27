@@ -35,7 +35,7 @@
                   	  	
  						<button class="facebookLogin">
  						<span class="facebookImage"></span>
- 						<span class="facebookText" onclick="location.href='https://www.facebook.com/'">Facebook으로 로그인</span>
+ 						<span class="facebookText" onclick="location.href='/login/facebook'">Facebook으로 로그인</span>
  						</button>
                     	<div class="forget">비밀번호를 잊으셨나요?</div>
                   	  	
