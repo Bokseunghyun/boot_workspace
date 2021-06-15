@@ -25,9 +25,7 @@ public class Follow {
 	@SequenceGenerator(sequenceName = "follow_seq", name = "follow_seq_gen")
 	private int id;
 	
-	//중간 테이블 생성됨.
-	// fromUser가 toUser를 following 함.
-	// toUser를 fromUser가 follower 함.
+
 	@ManyToOne
 	@JoinColumn(name="followingId")	//~부터
 	@JsonIgnoreProperties({"image"})

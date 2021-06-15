@@ -14,7 +14,7 @@
     <a href="/feed">
       <img src="/images/logo.png" />
     </a>
-    <input type="text" placeholder="Search">
+    
     <div class="navigation__links">
       <a href="/explore/" class="navigation__link">
           <i class="fa fa-compass"></i>
